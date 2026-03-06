@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BIN="$ROOT/.build/release/ngp"
+
+needs_build=0
+
+if [[ ! -x "$BIN" ]]; then
+  needs_build=1
+fi
+
+if [[ $needs_build -eq 0 ]]; then
+  for file in "$ROOT/Package.swift" "$ROOT/Package.resolved"; do
+    if [[ -e "$file" && "$file" -nt "$BIN" ]]; then
+      needs_build=1
+      break
+    fi
+  done
+fi
+
+if [[ $needs_build -eq 0 ]]; then
+  while IFS= read -r -d '' file; do
+    if [[ "$file" -nt "$BIN" ]]; then
+      needs_build=1
+      break
+    fi
+  done < <(find "$ROOT/Sources" "$ROOT/Tests" -type f -print0)
+fi
+
+if [[ $needs_build -eq 1 ]]; then
+  echo "Building ngp..." >&2
+  (
+    cd "$ROOT"
+    swift build -c release
+  ) >&2
+fi
+
+exec "$BIN" "$@"
