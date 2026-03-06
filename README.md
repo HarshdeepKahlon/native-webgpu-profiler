@@ -1,6 +1,13 @@
-# native-gpu-profiler
+# Native WebGPU Profiler
 
-Mac GPU traces for web apps, with one repo-local command.
+Native GPU profilers to capture and analyze WebGL or WebGPU frames.
+
+*Built for [BuildCores](https://buildcores.com/) and [worldmatrix](https://github.com/HarshdeepKahlon/worldmatrix?tab=readme-ov-file).*
+
+<p align="center">
+  <img src="docs/images/xcode-frame-debugger.png" alt="Xcode GPU frame debugger view" width=70%" />
+  <img src="docs/images/xcode-memory-view.png" alt="Xcode GPU memory view" width="70%" />
+</p>
 
 ## Quick start
 
